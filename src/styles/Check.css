@@ -1,0 +1,42 @@
+/* .check-container{
+   
+   
+   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+   background-color: #aeb2b6;
+   max-width: 800px;
+
+}
+.check-text{
+    font-weight: bold;
+    color: #585656;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+} */
+ /* AddressForm.css */
+
+/* General container for the checkout component */
+.check-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center contents horizontally */
+    justify-content: center; /* Center contents vertically */
+    width: 100%; /* Full width of the parent container */
+    /* max-width: 800px;  */
+    padding: 20px;
+    background-color: #d1c8c8; /* Same background color as the address form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for consistency */
+    margin-bottom: 20px; /* Space below the checkout component */
+    margin: 0 auto;
+  }
+  
+  /* Text inside the checkout container */
+  .check-text {
+    font-size: 24px; /* Large font size for prominence */
+    font-weight: bold;
+    color: #333; /* Dark text color for readability */
+    margin: 0; /* Remove default margin */
+  }
+  

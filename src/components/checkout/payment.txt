@@ -1,0 +1,459 @@
+Implementing server-side validation for credit card payments involves using a payment gateway to handle the actual transaction. The server-side code communicates with the payment gateway's API to process the payment securely. Here’s a general overview of how you can do this with a popular payment gateway like Stripe.
+
+### Prerequisites
+
+1. **Payment Gateway Account**: Sign up for a payment gateway account, such as Stripe, PayPal, or Square.
+2. **Server Environment**: You’ll need a backend server where you can securely handle payment information and interact with the payment gateway’s API.
+
+### Using Stripe as an Example
+
+Here’s a step-by-step guide on how to implement server-side payment processing using Stripe.
+
+#### 1. **Set Up Your Backend**
+
+First, you need to set up a server to handle payment requests. For this example, we'll use Node.js with Express, but you can adapt this to other environments as needed.
+
+**Install Dependencies**
+
+Install the required npm packages:
+
+```bash
+npm install express stripe body-parser
+```
+
+**Create a Server**
+
+Create a file named `server.js` (or `index.js` or similar) and add the following code:
+
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+const stripe = require('stripe')('YOUR_STRIPE_SECRET_KEY'); // Replace with your Stripe secret key
+
+const app = express();
+app.use(bodyParser.json());
+
+app.post('/api/charge', async (req, res) => {
+  const { amount, currency, source, description } = req.body;
+
+  try {
+    const charge = await stripe.charges.create({
+      amount, // Amount in cents
+      currency,
+      source,
+      description,
+    });
+
+    res.status(200).json({ success: true, charge });
+  } catch (error) {
+    console.error('Payment Error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+**Explanation**
+
+- `stripe.charges.create`: This method creates a charge object to process a payment.
+- `amount`: The amount to charge in the smallest currency unit (e.g., cents).
+- `currency`: The currency to use (e.g., "usd").
+- `source`: The payment source, which is typically a token representing the credit card.
+- `description`: A description of the charge.
+
+**Security Note**: Replace `'YOUR_STRIPE_SECRET_KEY'` with your actual Stripe secret key. Make sure not to expose this key on the client side.
+
+#### 2. **Modify Your React Frontend**
+
+Update your React component to send payment data to the server.
+
+**Install Stripe JavaScript Library**
+
+You’ll need to install the Stripe JavaScript library in your React app:
+
+```bash
+npm install @stripe/stripe-js
+```
+
+**Update PaymentForm Component**
+
+Update your `PaymentForm` component to integrate with Stripe and send the payment details to your server:
+
+```javascript
+import React from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { styled } from '@mui/system';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+const stripePromise = loadStripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
+
+const FormGrid = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
+const PaymentForm = () => {
+  const navigate = useNavigate();
+  const [paymentType, setPaymentType] = React.useState('creditCard');
+  const [amount, setAmount] = React.useState(5000); // Amount in cents (e.g., 50.00 USD)
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const cardElement = elements.getElement(CardElement);
+
+    const {token, error} = await stripe.createToken(cardElement);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/charge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount,
+          currency: 'usd',
+          source: token.id,
+          description: 'Payment description',
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Payment successful');
+        navigate('/checkout/review-order');
+      } else {
+        toast.error(result.error);
+      }
+    } catch (error) {
+      toast.error('An error occurred');
+    }
+  };
+
+  return (
+    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, margin: 'auto' }}>
+      <Typography variant="h6" gutterBottom>
+        Payment Form
+      </Typography>
+      <FormGrid>
+        <CardElement />
+        <Button type="submit" variant="contained" color="primary" disabled={!stripe}>
+          Pay
+        </Button>
+      </FormGrid>
+      <ToastContainer />
+    </Box>
+  );
+};
+
+const PaymentWrapper = () => (
+  <Elements stripe={stripePromise}>
+    <PaymentForm />
+  </Elements>
+);
+
+export default PaymentWrapper;
+```
+
+**Explanation**
+
+- `loadStripe`: Loads the Stripe JavaScript library and initializes it with your public key.
+- `CardElement`: A pre-built Stripe component to collect card details securely.
+- `stripe.createToken`: Creates a token representing the credit card information.
+- `fetch('/api/charge', ...)`: Sends a request to your backend to create a charge.
+
+**Security Note**: Always handle payment information securely and ensure your server communicates with the payment gateway securely.
+
+### Deploy Your Application
+
+1. **Backend**: Deploy your backend server (e.g., on Heroku, AWS, or any other cloud provider).
+2. **Frontend**: Deploy your React application (e.g., on Vercel, Netlify, or any other hosting service).
+
+By following these steps, you can securely handle credit card payments in your application. Always refer to the documentation of the payment gateway you choose for the most accurate and secure implementation details.
+
+-------------------------
+Updated PaymentForm:
+import * as React from 'react';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import RadioGroup from '@mui/material/RadioGroup';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
+import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import { styled } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import '../../styles/payment.css';
+import { Grid } from '@mui/material';
+import Checkout from './Check';
+
+const stripePromise = loadStripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
+
+const FormGrid = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
+const PaymentForm = () => {
+  const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paymentType, setPaymentType] = React.useState('creditCard');
+
+  const handlePaymentTypeChange = (event) => {
+    setPaymentType(event.target.value);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    if (paymentType === 'creditCard') {
+      const cardElement = elements.getElement(CardElement);
+
+      const {token, error} = await stripe.createToken(cardElement);
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/charge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: 5000, // Amount in cents (e.g., $50.00)
+            currency: 'usd',
+            source: token.id,
+            description: 'Payment description',
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          toast.success('Payment successful');
+          navigate('/checkout/review-order');
+        } else {
+          toast.error(result.error);
+        }
+      } catch (error) {
+        toast.error('An error occurred');
+      }
+    } else if (paymentType === 'bankTransfer') {
+      toast.success('Proceeding to place your order');
+      navigate('/checkout/review-order');
+    } else {
+      toast.error('Please select a payment method');
+    }
+  };
+
+  const moveToPreviousPage = () => {
+    navigate('/checkout');
+    toast.success('Proceeding to checkout');
+  };
+
+  return (
+    <div className="">
+      <Checkout />
+      <div className='p-container'>
+        <Stack spacing={{ xs: 3, sm: 6 }} useFlexGap>
+          <Typography component='h1' variant='h6' fontWeight='bold' align='center' className='check-out-text'>
+            Payment Form
+          </Typography>
+
+          <FormControl component="fieldset" fullWidth>
+            <RadioGroup
+              aria-label="Payment options"
+              name="paymentType"
+              value={paymentType}
+              onChange={handlePaymentTypeChange}
+              sx={{
+                flexDirection: { sm: 'column', md: 'row' },
+                gap: 2,
+              }}
+            >
+              <Card
+                raised={paymentType === 'creditCard'}
+                sx={{
+                  maxWidth: { sm: '100%', md: '50%' },
+                  flexGrow: 1,
+                  outline: '1px solid',
+                  outlineColor:
+                    paymentType === 'creditCard' ? 'primary.main' : 'divider',
+                  backgroundColor:
+                    paymentType === 'creditCard' ? 'background.default' : '',
+                }}
+              >
+                <CardActionArea onClick={() => setPaymentType('creditCard')}>
+                  <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CreditCardRoundedIcon color="primary" fontSize="small" />
+                    <Typography fontWeight="medium">Card</Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+              <Card
+                raised={paymentType === 'bankTransfer'}
+                sx={{
+                  maxWidth: { sm: '100%', md: '50%' },
+                  flexGrow: 1,
+                  outline: '1px solid',
+                  outlineColor:
+                    paymentType === 'bankTransfer' ? 'primary.main' : 'divider',
+                  backgroundColor:
+                    paymentType === 'bankTransfer' ? 'background.default' : '',
+                }}
+              >
+                <CardActionArea onClick={() => setPaymentType('bankTransfer')}>
+                  <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <AccountBalanceRoundedIcon color="primary" fontSize="small" />
+                    <Typography fontWeight="medium">Bank account</Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </RadioGroup>
+          </FormControl>
+
+          {paymentType === 'creditCard' && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  p: 3,
+                  height: { xs: 300, sm: 350, md: 375 },
+                  width: '100%',
+                  borderRadius: '20px',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  backgroundColor: 'background.paper',
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.05)',
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle2">Credit card</Typography>
+                  <CreditCardRoundedIcon sx={{ color: 'text.secondary' }} />
+                </Box>
+                <FormGrid sx={{ flexGrow: 1 }}>
+                  <FormLabel htmlFor="card-element" required>
+                    Card details
+                  </FormLabel>
+                  <CardElement options={{ hidePostalCode: true }} />
+                </FormGrid>
+                <FormControlLabel
+                  control={<Checkbox name="saveCard" />}
+                  label="Remember credit card details for next time"
+                />
+                <Stack direction="row" spacing={2} justifyContent="space-between">
+                  <button onClick={moveToPreviousPage} className='button'>Back</button>
+                  <button onClick={handleSubmit} className='button'>Next</button>
+                </Stack>
+              </Box>
+            </Box>
+          )}
+
+          {paymentType === 'bankTransfer' && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+              }}
+            >
+              <Alert severity="warning" icon={<WarningRoundedIcon />}>
+                Your order will be processed once we receive the funds.
+              </Alert>
+              <Typography variant="subtitle1" fontWeight="medium">
+                Bank account
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Please transfer the payment to the bank account details shown below.
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Typography variant="body1" color="text.secondary">
+                  Bank:
+                </Typography>
+                <Typography variant="body1" fontWeight="medium">
+                  Mastercredit
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Typography variant="body1" color="text.secondary">
+                  Account number:
+                </Typography>
+                <Typography variant="body1" fontWeight="medium">
+                  123456789
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Typography variant="body1" color="text.secondary">
+                  Routing number:
+                </Typography>
+                <Typography variant="body1" fontWeight="medium">
+                  987654321
+                </Typography>
+              </Box>
+            </Box>
+          )}
+        </Stack>
+        <ToastContainer className="toast-container" />
+      </div>
+    </div>
+  );
+};
+
+const PaymentWrapper = () => (
+  <Elements stripe={stripePromise}>
+    <PaymentForm />
+  </Elements>
+);
+
+export default PaymentWrapper;

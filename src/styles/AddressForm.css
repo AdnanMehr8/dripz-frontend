@@ -1,0 +1,176 @@
+
+/* General container styling */
+/* .address-container {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 7rem;
+} */
+
+
+/* .grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+}
+
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+p {
+  font-weight: bold;
+  color: #585656;
+}
+
+
+.outlined-input {
+  width: 100%;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 16px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.outlined-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+
+.checkbox-label {
+  font-size: 14px;
+  color: #333;
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; 
+  margin-top: 20px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #413c3c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #7d7979;
+}
+
+
+.toast-container {
+  margin-top: 20px;
+} */
+/* AddressForm.css */
+
+/* General container for the address form */
+.g-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* min-height: 100vh;  */
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #f5f5f5; 
+  margin-top: 3px;
+  max-width: 800px; /* Match the maximum width of the address form */
+  width: 100%; /* Full width of the parent container */
+ /* border-radius: 8px; */
+
+
+}
+
+.grid-con{
+  margin-left: 24px;
+  margin-top: 20px;
+}
+
+p {
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* Container for the form grid */
+.address-container {
+  margin: 0 auto;
+  max-width: 800px; /* Limits the maximum width of the form */
+  width: 100%;
+  padding: 20px;
+  background-color: #ffffff; /* White background for the form */
+  border-radius: 8px; /* Rounded corners for the form */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a lifted effect */
+}
+
+/* Form labels */
+.form-label {
+  display: block;
+  margin-bottom: 8px; /* Space between label and input */
+  font-weight: bold;
+  color: #333; /* Dark text color for readability */
+  
+}
+
+/* Outlined input fields */
+.outlined-input {
+  width: 100%; /* Full width input */
+  margin-bottom: 16px; /* Space below each input field */
+  border-radius: 4px; /* Slightly rounded corners */
+  border: 1px solid #ccc; /* Light border color */
+}
+
+/* Container for the button */
+.button-container {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  margin-top: 20px;
+}
+
+/* Button styling */
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #ffffff; 
+  background-color: #413c3c; 
+  border: none;
+  border-radius: 4px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #292828; /* Darker shade for hover effect */
+}
+
+/* Styling for checkbox label */
+.checkbox-label {
+  font-size: 14px;
+  color: #333; /* Dark text color */
+}
+
+/* Toast container */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999; /* Ensures toast messages are visible on top of other elements */
+}

@@ -1,0 +1,67 @@
+/* Example: styles/header.css */
+.navbar-container{
+  margin-bottom: 60px;
+}
+.header-navbar {
+  display: flex !important; /* Ensure flex display */
+  justify-content: space-between !important; /* Align items to edges */
+  align-items: center !important; /* Vertically center items */
+  position: fixed; /* Fix the position at the top */
+  top: 0; /* Align to the top of the viewport */
+  left: 0; /* Align to the left of the viewport */
+  width: 100%; /* Full width of the viewport */
+  /* height: 2rem; Set height */
+  padding-top: 15px; /* Adjust padding */
+  background-color: #fff; /* Background color (adjust as needed) */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
+  transition: top 0.3s ease-in-out; /* Smooth transition for hiding/showing */
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+/* Additional style for the animated effect */
+.header-navbar.hidden {
+  top: -2rem; /* Move navbar up to hide it */
+}
+
+/* Ensure padding and margins are adjusted for fixed positioning */
+body {
+  padding-top: 2rem; /* Offset content by the height of the fixed navbar */
+}
+
+.header-navbar .navbar-brand {
+  display: flex !important; /* Flex display for brand */
+  align-items: center !important; /* Vertically center items */
+  position: relative;
+  left: 20px;
+  bottom: 5px;
+}
+
+.header-navbar .mr-auto {
+  display: flex !important; /* Flex display for left nav */
+  align-items: center !important; /* Vertically center items */
+}
+
+.header-navbar .ml-auto {
+  display: flex !important; /* Flex display for right nav */
+  align-items: center !important; /* Vertically center items */
+}
+
+@media (max-width: 768px) {
+  .header-navbar {
+      flex-direction: row;
+      align-items: center !important; /* Center items vertically */
+  }
+  
+  .header-navbar .mr-auto,
+  .header-navbar .ml-auto {
+      margin-top: 10px !important; /* Adjust margin as needed */
+      justify-content: center !important; 
+  }
+}
+
+.custom-navbar-brand {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}

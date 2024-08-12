@@ -1,0 +1,14 @@
+.checkoutpage-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* min-height: 100vh;  */
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #f5f5f5; 
+  /* margin-top: 3px; */
+  max-width: 800px; /* Match the maximum width of the address form */
+  width: 100%; /* Full width of the parent container */
+ /* border-radius: 8px; */
+}

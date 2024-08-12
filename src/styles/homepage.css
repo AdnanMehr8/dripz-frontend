@@ -1,0 +1,29 @@
+/* .product-card {
+    cursor: pointer;
+    margin: 0 auto;
+    max-width: 300px;
+  }
+  
+  .product-image {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .carousel .carousel-item {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .carousel-control-prev, .carousel-control-next {
+    width: 5%;
+  }
+  
+  .carousel-indicators {
+    bottom: -30px;
+  }
+   */
+
+.small-image {
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+  }
