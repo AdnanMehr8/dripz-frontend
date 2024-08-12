@@ -52,6 +52,8 @@ import { jwtDecode } from 'jwt-decode';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000',
+  // baseURL: `${window.location.origin}`,
+
   // other configurations
   withCredentials: true 
 });
