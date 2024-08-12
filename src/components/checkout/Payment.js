@@ -709,7 +709,7 @@ import api from '../../api/api';
 import '../../styles/payment.css';
 import Checkout from './Check';
 
-const stripePromise = loadStripe('pk_test_51PkLk22NEMxq5ucjCSPvorzsewT0zsMUDXnsfSN0A6gAepkc9zGxGwy7uNnc5FV6OjWmiww4yXVr30Jrmk1h6qO3008NpdUnbN'); // Replace with your Stripe public key
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY); // Replace with your Stripe public key
 
 
 const FormGrid = styled('div')(() => ({
