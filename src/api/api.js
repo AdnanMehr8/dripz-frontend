@@ -51,8 +51,8 @@ import { jwtDecode } from 'jwt-decode';
 
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
-  // baseURL: `${window.location.origin}`,
+  // baseURL: 'http://localhost:5000',
+  baseURL: 'https://dripz-backend.vercel.app/',
 
   // other configurations
   withCredentials: true 
