@@ -11,5 +11,5 @@
     max-width: 800px; /* Match the maximum width of the address form */
     width: 100%; /* Full width of the parent container */
    border-radius: 8px;
-    margin-bottom: -50px;
+    /* margin-bottom: -50px; */
 }

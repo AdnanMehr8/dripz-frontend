@@ -23,7 +23,25 @@
   }
    */
 
-.small-image {
-    width: 100px; /* Adjust the width as needed */
+/* .small-image {
+    width: 100px; 
     height: auto;
+  } */
+
+  .home-page {
+    padding-top: 20px;
+  }
+  
+  .product-card-container {
+    margin-top: 40px;
+  }
+  
+  @media (max-width: 768px) {
+    .home-page {
+      padding-top: 10px;
+    }
+  
+    .product-card-container {
+      margin-top: 20px;
+    }
   }

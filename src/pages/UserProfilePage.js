@@ -17,7 +17,7 @@ const UserProfilePage = () => {
   }, [dispatch, user, token]);
 
   return (
-    <Container className="user-profile-container">
+    <div className="user-profile-container">
       {status === 'loading' && <Spinner animation="border" className="loading-spinner" />}
       {status === 'failed' && <Alert variant="danger">Error: {error}</Alert>}
 
@@ -39,10 +39,14 @@ const UserProfilePage = () => {
             </Button>
           </Card.Body>
         </Card>
+        
+       
       ) : (
         <p className="no-profile-message">No user profile found.</p>
       )}
-    </Container>
+     
+     
+        </div>
   );
 };
 

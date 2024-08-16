@@ -19,7 +19,7 @@ const PlaceOrder = () => {
     }
     return (
         <div className='mt-5 mb-5'>
-            <Checkout />
+            {/* <Checkout /> */}
             <div className='place-container'>
             <h1 >📦</h1>
             <h3 className='text-center'>Thank you for your order!</h3>

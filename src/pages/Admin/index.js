@@ -9,11 +9,7 @@ import AdminProducts from './AdminProducts';
 const { TabPane } = Tabs;
 const Admin = () => {
     const { products } = useSelector((state) => state.products);
-    // useEffect(() => {
-    //     if (!localStorage.getItem("token")) {
-    //         window.location.href = "admin-login";
-    //     }
-    // }, []);
+
 
     return (
         <div>
@@ -28,7 +24,6 @@ const Admin = () => {
                 </div>
                 <h1 className='underline text-primary text-xl cursor-pointer'
                     onClick={() => {
-                        localStorage.removeItem("token");
                         window.location.href = "/admin-login";
                     }}
                 >

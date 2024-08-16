@@ -61,23 +61,6 @@ export const productSlice = createSlice({
       .addCase(fetchProducts.pending, (state) => {
         state.status = 'loading';
       })
-      // .addCase(fetchProducts.fulfilled, (state, action) => {
-      //   state.status = 'succeeded';
-      //   // state.products = action.payload;
-      //   state.products = [...state.products, ...action.payload];
-      //   // state.page += 1;
-      //   // state.hasMore = action.payload.length > 0;
-      // })
-      // .addCase(fetchProducts.fulfilled, (state, action) => {
-      //   state.status = 'succeeded';
-      //   state.products = [...state.products, ...action.payload];
-      //   state.hasMore = action.payload.length > 0;
-      // })
-      // .addCase(fetchProducts.fulfilled, (state, action) => {
-      //   state.status = 'succeeded';
-      //   state.products = [...state.products, ...action.payload];
-      //   state.totalPages = action.payload.totalPages;
-      // })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const { products, totalProducts, totalPages, currentPage } = action.payload;

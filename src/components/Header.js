@@ -7,14 +7,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/authSlice';
 import { CiUser, CiShoppingCart, CiCircleList } from "react-icons/ci";
 import logo from '../assets/images/Dripz.png';
+import { fetchAllCartItems } from '../redux/cartSlice';
+import { debounce } from 'lodash';
 
 const Header = () => {
   const navbarRef = useRef(null); // Create a ref for the navbar
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.token);
+  const cartItems = useSelector((state) => state.cartItems.cartItems);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchAllCartItems());
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     let lastScrollTop = 0;
 
-    const handleScroll = () => {
+    const handleScroll = debounce(() => {
       const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
       if (currentScroll > lastScrollTop) {
         // Scrolling down
@@ -24,25 +35,26 @@ const Header = () => {
         navbarRef.current.classList.remove('hidden');
       }
       lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
-    };
+    }, 100);
 
     window.addEventListener('scroll', handleScroll);
 
     // Cleanup function to remove the event listener
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      handleScroll.cancel();
     };
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
-  const isAuthenticated = useSelector((state) => state.auth.token);
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
+  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
   return (
-    <Container className="navbar-container">
+    <div className="navbar-container">
     <Navbar bg="white" variant="white" expand="lg" className="header-navbar" ref={navbarRef}>
       <Nav className="mr-auto">
         <NavDropdown title={<CiCircleList size={30}/>} id="basic-nav-dropdown">
@@ -80,10 +92,13 @@ const Header = () => {
         )}
       </Nav>
       <Nav className="ml-auto">
-        <Nav.Link as={Link} to="/cart"><CiShoppingCart size={30}/></Nav.Link>
+        <Nav.Link as={Link} to="/cart">
+        <CiShoppingCart size={30}/>
+        <span className='cart-count'>{cartItemCount}</span>
+        </Nav.Link>
       </Nav>
     </Navbar>
-    </Container>
+    </div>
   );
 };
 

@@ -1,12 +1,15 @@
 .user-profile-container {
-    margin-top: 120px;
+    /* margin-top: 120px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 10px; */
+    display: flex;
+    /* justify-content: space-around; */
+    /* gap: 50px; */
   }
   
   .user-profile-card {
@@ -14,6 +17,7 @@
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    position: relative;
   }
   
   .profile-picture {
@@ -67,3 +71,7 @@
     color: #6c757d;
   }
   
+  .user-order-card{
+    /* justify-content: center; */
+    align-items: center;
+  }

@@ -30,7 +30,7 @@ import PaymentForm from './components/checkout/Payment';
 import Review from './components/checkout/Review';
 import PlaceOrder from './components/checkout/placeOrder';
 import AddressForm from './components/checkout/SAddress';
-import PaymentWrapper from './components/checkout/Payment';
+import Payment from './components/checkout/Payment';
 
 
 const AppContent = () => {
@@ -69,9 +69,9 @@ const AppContent = () => {
           <Route path="/admin-login" element={<Login />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/checkout/shipping-address" element={<AddressForm />} />
-          <Route path="/checkout/payment-details" element={<PaymentWrapper />} />
+          <Route path="/payment" element={<Payment /> } />
           <Route path="/checkout/review-order" element={<Review />} />
-          <Route path="/checkout/place-order" element={<PlaceOrder />} />
+          <Route path="/success" element={<PlaceOrder />} />
         </Routes>
 
         {/* <Contact /> */}

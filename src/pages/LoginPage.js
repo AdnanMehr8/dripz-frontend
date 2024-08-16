@@ -15,8 +15,14 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ email, password }));
-    navigate('/')
+    if (status === 'succeeded'){
+      navigate('/')
+    }
   };
+  if (status === 'failed')
+   {
+    return <p className="text-center text-xl text-red-500">Your Request to login has been rejected: {error}</p>;
+  }
 
   return (
     <Container>

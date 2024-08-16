@@ -1,60 +1,58 @@
-/* Example: styles/header.css */
-.navbar-container{
+/* .navbar-container{
   margin-bottom: 60px;
 }
 .header-navbar {
-  display: flex !important; /* Ensure flex display */
-  justify-content: space-between !important; /* Align items to edges */
-  align-items: center !important; /* Vertically center items */
-  position: fixed; /* Fix the position at the top */
-  top: 0; /* Align to the top of the viewport */
-  left: 0; /* Align to the left of the viewport */
-  width: 100%; /* Full width of the viewport */
-  /* height: 2rem; Set height */
-  padding-top: 15px; /* Adjust padding */
-  background-color: #fff; /* Background color (adjust as needed) */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
-  transition: top 0.3s ease-in-out; /* Smooth transition for hiding/showing */
-  z-index: 1000; /* Ensure it stays above other content */
+  display: flex !important; 
+  justify-content: space-between !important;
+  align-items: center !important; 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  padding-top: 15px; 
+  background-color: #fff; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: top 0.3s ease-in-out; 
+  z-index: 1000; 
 }
 
-/* Additional style for the animated effect */
+
 .header-navbar.hidden {
-  top: -2rem; /* Move navbar up to hide it */
+  top: -2rem; 
 }
 
-/* Ensure padding and margins are adjusted for fixed positioning */
+
 body {
-  padding-top: 2rem; /* Offset content by the height of the fixed navbar */
+  padding-top: 2rem; 
 }
 
 .header-navbar .navbar-brand {
-  display: flex !important; /* Flex display for brand */
-  align-items: center !important; /* Vertically center items */
+  display: flex !important; 
+  align-items: center !important; 
   position: relative;
   left: 20px;
   bottom: 5px;
 }
 
 .header-navbar .mr-auto {
-  display: flex !important; /* Flex display for left nav */
-  align-items: center !important; /* Vertically center items */
+  display: flex !important; 
+  align-items: center !important; 
 }
 
 .header-navbar .ml-auto {
-  display: flex !important; /* Flex display for right nav */
-  align-items: center !important; /* Vertically center items */
+  display: flex !important; 
+  align-items: center !important; 
 }
 
 @media (max-width: 768px) {
   .header-navbar {
       flex-direction: row;
-      align-items: center !important; /* Center items vertically */
+      align-items: center !important;
   }
   
   .header-navbar .mr-auto,
   .header-navbar .ml-auto {
-      margin-top: 10px !important; /* Adjust margin as needed */
+      margin-top: 10px !important; 
       justify-content: center !important; 
   }
 }
@@ -64,4 +62,110 @@ body {
   margin-right: auto;
   display: block;
   text-align: center;
+}
+
+#cart-icon {
+  position: relative;
+  display: inline-block;
+}
+.cart-count {
+  position: absolute;
+  top: 13px;
+  right: 0px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 10px;
+} */
+
+/* header.css */
+
+/* Basic styling for the container and navbar */
+.navbar-container {
+  margin-bottom: 0; 
+
+}
+
+.header-navbar {
+  transition: top 0.3s ease-in-out; /* Smooth transition for navbar hide/show */
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Light shadow for better visibility */
+ 
+}
+
+.header-navbar .navbar-brand img {
+  max-height: 60px;
+}
+
+/* Hide navbar when scrolling down */
+.header-navbar.hidden {
+  top: -80px; 
+}
+
+/* Ensure icons are centered and spaced evenly */
+.header-navbar .nav-link,
+.header-navbar .nav-dropdown {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.header-navbar .nav-link {
+  position: relative;
+}
+
+/* Cart count styling */
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Styling for dropdown items */
+.nav-dropdown-menu {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+}
+
+.nav-dropdown-item {
+  padding: 0.5rem 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-navbar {
+    padding: 0.5rem; /* Adjust padding for smaller screens */
+  }
+  
+  .header-navbar .navbar-brand img {
+    max-height: 50px; /* Adjust logo size */
+  }
+  
+  .header-navbar .nav-link,
+  .header-navbar .nav-dropdown {
+    padding: 0.5rem;
+  }
+  
+  .cart-count {
+    top: -3px; /* Adjust cart count position */
+    right: -5px;
+  }
+}
+
+/* Extra small screens (phones) */
+@media (max-width: 576px) {
+  .header-navbar {
+    padding: 0.25rem; /* Further adjust padding for very small screens */
+  }
+  
+  .header-navbar .navbar-brand img {
+    max-height: 40px; /* Further adjust logo size */
+  }
 }

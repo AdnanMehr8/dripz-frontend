@@ -46,7 +46,6 @@ const LoginPage = () => {
         <Button variant="primary" type="submit" disabled={status === 'loading'}>
           {status === 'loading' ? 'Logging in...' : 'Login'}
         </Button>
-        <p>Don't have an account? Click <a href='/register'>Register</a></p>
       </Form>
     </Container>
   );

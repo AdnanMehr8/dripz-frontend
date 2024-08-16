@@ -1,16 +1,16 @@
-/* slider.css */
+/* 
 
-/* Ensure full width but limit height */
+
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 150vh; /* Adjust height as needed to ensure the component below is visible */
-  overflow: hidden; /* Hide overflow to prevent horizontal scrollbars */
+  height: 150vh; 
+  overflow: hidden; 
   
 }
 
 .carousel {
-  position: relative; /* Change to relative from absolute */
+  position: relative; 
   width: 100%;
   height: 100%;
 }
@@ -37,7 +37,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   padding: 2rem;
 }
@@ -55,5 +55,69 @@
 .slider-image {
   object-fit: cover;
   width: 100%;
-  height: 100%; /* Adjust height as needed */
+  height: 100%; 
+} */
+
+/* .carousel-container {
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-top: -20px;
+}
+
+
+.slider-image-container{
+  height: 100vh;
+  width: 227vh;
+  overflow: hidden;
+  object-fit: contain;
+}
+
+
+.slider-image {
+  height: 100vh;
+  width: 227vh;
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .slider-image-container {
+    height: 40vh;
+  }
+} */
+
+.carousel-container {
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-top: -20px;
+}
+
+.slider-image-container {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.slider-image {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .slider-image-container {
+    height: 50vh;
+  }
 }

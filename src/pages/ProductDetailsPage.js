@@ -4,14 +4,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../api/api';
 import { useParams } from 'react-router-dom';
 import '../styles/ProductDetailsPage.css'; // Assuming you have a CSS file for custom styles
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addToCart, resetCartState } from '../redux/cartSlice';
 
 const ProductDetailsPage = () => {
+  const dispatch = useDispatch();
+  const cartStatus = useSelector((state) => state.cartItems.cartStatus);
   const { id: productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [cartStatus, setCartStatus] = useState('');
 
   useEffect(() => {
+    dispatch(resetCartState());
+    
     const fetchProduct = async () => {
       try {
         const response = await api.get(`/products/${productId}`);
@@ -24,22 +30,12 @@ const ProductDetailsPage = () => {
     fetchProduct();
   }, [productId]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (productId, quantity) => {
     try {
-      const response = await api.post(
-        '/cart/add',
-        { productId, quantity },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-      setCartStatus('Item added to cart!');
-      console.log('Cart response:', response.data);
+      await dispatch(addToCart({ productId, quantity })).unwrap();
+      
     } catch (error) {
       console.error('Error adding item to cart:', error);
-      setCartStatus('Failed to add item to cart.');
     }
   };
 
@@ -64,9 +60,11 @@ const ProductDetailsPage = () => {
               className="quantity-input"
             />
           </div>
-          <Button variant="primary" onClick={handleAddToCart} className="add-to-cart-button">
+          <Button variant="primary"  onClick={() => handleAddToCart(productId, quantity)} className="add-to-cart-button">
             Add to Cart
           </Button>
+          {/* {cartStatus && <Alert variant={cartStatus.includes('succeeded') ? 'danger' : 'success'} className="cart-status-alert">{cartStatus}</Alert>} */}
+
           {cartStatus && <Alert variant={cartStatus.includes('Failed') ? 'danger' : 'success'} className="cart-status-alert">{cartStatus}</Alert>}
         </Card.Body>
       </Card>

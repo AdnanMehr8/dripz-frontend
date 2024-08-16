@@ -14,6 +14,7 @@ import { Container } from 'react-bootstrap';
 import api from '../../api/api';
 import '../../styles/Review.css'; // Add this CSS file for custom styles
 
+
 export default function Review() {
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
@@ -57,8 +58,7 @@ export default function Review() {
   }
 
   const placeOrder = () => {
-    navigate('/checkout/payment-details');
-    
+    navigate('/payment');   
   }
 
  
