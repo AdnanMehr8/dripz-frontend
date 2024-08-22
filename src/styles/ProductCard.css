@@ -134,4 +134,7 @@
     .category-card-image {
       height: 150px;
     }
+    .category-image-card-text{
+      font-size: 10px;
+    }
   }

@@ -25,34 +25,41 @@ const LoginPage = () => {
   }
 
   return (
-    <Container>
+    <Container className='login-Container'>
+      <div className='login-title-container'>
       <h2 className='text-center'>Login</h2>
+      </div>
+      <div className='login-seperator'></div>
       {status === 'failed' && <Alert variant="danger">{error}</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formEmail">
-          <Form.Label>Email</Form.Label>
+          <Form.Label className='login-label'>E-mail</Form.Label>
           <Form.Control
             type="email"
             placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className='login-input'
           />
         </Form.Group>
 
         <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label className='login-label'>Password</Form.Label>
           <Form.Control
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className='login-input'
           />
         </Form.Group>
-
-        <Button variant="primary" className='button' type="submit" disabled={status === 'loading'}>
+        <div className='login-btn-container'>
+        <Button variant="primary" type="submit" className='login-btn' disabled={status === 'loading'}>
           {status === 'loading' ? 'Logging in...' : 'Login'}
         </Button>
-        <p>Don't have an account? Click <a href='/register'>Register</a></p>
+
+        </div>
+        <p className='register-link'>Don't have an account? Click <a href='/register'> Register</a></p>
       </Form>
     </Container>
   );

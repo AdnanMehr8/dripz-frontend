@@ -39,6 +39,18 @@ export const updateCartItem = createAsyncThunk('cartitems/updateCartItem', async
   return response.data;
 });
 
+export const deleteCartItem = createAsyncThunk('cartitems/deleteCartItem', async (productId) => {
+  const response = await api.delete(`/cart/remove/${productId}`);
+  console.log(response);
+  return response.data;
+});
+
+export const deleteCart = createAsyncThunk('cartitems/deleteCart', async () => {
+  const response = await api.delete(`/cart/clear`);
+  console.log(response);
+  return response.data;
+});
+
 export const cartSlice = createSlice({
   name: 'cartitems',
   initialState,
@@ -95,6 +107,28 @@ export const cartSlice = createSlice({
       })
       builder.addCase('cartitems/optimisticUpdate', (state, action) => {
         state.cartItems = action.payload;
+      })
+      .addCase(deleteCartItem.pending, (state) => {
+        state.status = 'Removing item from cart';
+      })
+      .addCase(deleteCartItem.fulfilled, (state, action) => {
+        state.status = 'Removed';
+        state.cartItems = action.payload.items;
+      })
+      .addCase(deleteCartItem.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(deleteCart.pending, (state) => {
+        state.status = 'Removing cart';
+      })
+      .addCase(deleteCart.fulfilled, (state, action) => {
+        state.status = 'Removed';
+        state.cartItems = action.payload;
+      })
+      .addCase(deleteCart.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });

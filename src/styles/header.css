@@ -162,7 +162,7 @@ body {
 /* Extra small screens (phones) */
 @media (max-width: 576px) {
   .header-navbar {
-    padding: 0.25rem; /* Further adjust padding for very small screens */
+    padding: 0.5rem; /* Further adjust padding for very small screens */
   }
   
   .header-navbar .navbar-brand img {

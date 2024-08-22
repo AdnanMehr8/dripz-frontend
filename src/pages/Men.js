@@ -13,11 +13,9 @@ function Men() {
   const { products, page, status, error, hasMore } = useSelector((state) => state.products);
   const cartStatus = useSelector((state) => state.cartItems.cartStatus);
   const [quantity] = useState(1);
-  // const [cartStatus, setCartStatus] = useState('');
   const observer = useRef();
 
   useEffect(() => {
-    dispatch(resetCartState());
     dispatch(fetchProducts({ page, limit: 9, gender: 'men', category: 'Men' }));
   }, [dispatch, page]);
 

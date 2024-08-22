@@ -1,0 +1,33 @@
+.login-Container{
+    background-color: rgb(201, 170, 170);
+    max-width: 600px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+ .login-seperator{
+    border: 1px solid black;
+    margin-bottom: 10px;
+ }
+.login-label{
+    text-align: center;
+}
+.login-input{
+    max-width: 400px;
+    margin: 0 auto;
+}
+.login-btn-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+.login-btn{
+    /* justify-items: center; */
+}
+.register-link{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

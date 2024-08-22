@@ -21,8 +21,10 @@ const RegisterPage = () => {
   };
 
   return (
-    <Container>
+    <Container className='login-Container'>
       <h2 className='text-center'>Register</h2>
+      <div className='login-seperator'></div>
+
       {status === 'failed' && <Alert variant="danger">{error}</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formName">
@@ -64,11 +66,12 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-
+        <div className='login-btn-container'>
         <Button variant="primary" className='button' type="submit" disabled={status === 'loading'}>
           {status === 'loading' ? 'Registering...' : 'Register'}
         </Button>
-        <p>Already have an account? Click <a href='/login'>Login</a></p>
+        </div>
+        <p className='register-link'>Already have an account? Click <a href='/login'>Login</a></p>
       </Form>
     </Container>
   );

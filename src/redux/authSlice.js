@@ -4,15 +4,13 @@ import api from '../api/api';
 const initialState = {
   token: localStorage.getItem('token') || null,
   user: JSON.parse(localStorage.getItem('user')) || null,
+  orders: [],
   status: 'idle',
   error: null
 };
 
 // Thunks
-// export const login = createAsyncThunk('auth/login', async (credentials) => {
-//   const response = await api.post('/login', credentials);
-//   return response.data;
-// });
+
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
     const response = await api.post('/login', credentials);
@@ -53,11 +51,19 @@ export const fetchUserProfile = createAsyncThunk('auth/fetchUserProfile', async 
   return response.data;
 });
 
+export const fetchUserOrders = createAsyncThunk('auth/fetchUserOrders', async (userId) => {
+  const response = await api.get(`/orders/${userId}`);
+  console.log('User ORders', response)
+  return response.data; 
+});
+
 // New thunk for editing user profile
 export const editUserProfile = createAsyncThunk('auth/editUserProfile', async ({profileId, profileData}) => {
   const response = await api.put(`/profiles/${profileId}`, profileData);
   return response.data;
 });
+
+
 
 // New thunk for logout
 // export const logout = createAsyncThunk('auth/logout', async () => {
@@ -147,6 +153,17 @@ const authSlice = createSlice({
       .addCase(fetchUserProfile.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(fetchUserOrders.pending, (state) => {
+        state.orderStatus = 'loading';
+      })
+      .addCase(fetchUserOrders.fulfilled, (state, action) => {
+        state.orderStatus = 'succeeded';
+        state.orders = action.payload;
+      })
+      .addCase(fetchUserOrders.rejected, (state, action) => {
+        state.orderStatus = 'failed';
+        state.orderError = action.error.message;
       })
       .addCase(editUserProfile.pending, (state) => {
         state.status = 'loading';

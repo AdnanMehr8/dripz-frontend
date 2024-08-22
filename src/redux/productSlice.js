@@ -22,10 +22,21 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
-export const fetchAllProducts = createAsyncThunk('products/fetchAllProducts', async () => {
-  const response = await api.get(`/all-products`)
-  return response.data;
-});
+// export const fetchAllProducts = createAsyncThunk('products/fetchAllProducts', async ({ page, limit }) => {
+//   const response = await api.get(`/all-products`, {
+//     params: { _limit: limit, _page: page }
+//   })
+//   return response.data;
+// });
+export const fetchAllProducts = createAsyncThunk(
+  'products/fetchAllProducts',
+  async ({ page, limit }) => {
+    const response = await api.get(`/all-products`, {
+      params: { _limit: limit, _page: page }
+    });
+    return response.data;
+  }
+);
 // productSlice.js
 // export const fetchProducts = createAsyncThunk('products/fetchProducts', async ({ page, limit }) => {
 //   const response = await api.get(`/products?page=${page}&limit=${limit}`);
@@ -81,6 +92,7 @@ export const productSlice = createSlice({
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.products = action.payload;
+        
       })
       .addCase(fetchProduct.rejected, (state, action) => {
         state.status = 'failed';
@@ -91,11 +103,14 @@ export const productSlice = createSlice({
       })
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.products = action.payload;
-        // console.log('Products fetched:', action.payload);
-        // // state.products = Array.isArray(action.payload) ? action.payload : [];
-        // state.products = [...state.products, ...action.payload.products];
-        // state.hasMore = action.payload.currentPage < action.payload.totalPages;
+        // state.products = action.payload;
+        const { products, totalProducts, totalPages, currentPage } = action.payload;
+        if (currentPage === 1) {
+          state.products = products;
+        } else {
+          state.products = [...state.products, ...products];
+        }
+        state.hasMore = currentPage < totalPages;
       })
       
       .addCase(fetchAllProducts.rejected, (state, action) => {

@@ -1,21 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Table, Button, Alert, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllCartItems, updateCartItem } from '../redux/cartSlice';
+import { deleteCartItem, fetchAllCartItems, resetCartState, updateCartItem } from '../redux/cartSlice';
 import '../styles/CartPage.css'; // Assuming you have a CSS file for custom styles
 import { debounce } from 'lodash';
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const { cartItems, status, error, cartStatus } = useSelector((state) => state.cartItems);
+  const [isCheckoutDisabled, setIsCheckoutDisabled] = useState(true);
 
   useEffect(() => {
     dispatch(fetchAllCartItems());
+    // dispatch(resetCartState());
   }, [dispatch]);
-
+  
   useEffect(() => {
-    console.log('Updated cartItems:', cartItems); // Debugging line to check the cartItems state
+    setIsCheckoutDisabled(cartItems.length === 0)
   }, [cartItems]);
 
   const debouncedUpdateQuantity = debounce((productId, quantity) => {
@@ -34,6 +36,18 @@ const CartPage = () => {
     }
   };
 
+  const handleDelete = (productId) => {
+    dispatch(deleteCartItem(productId))
+      .unwrap()
+      .then(() => {
+        // Item successfully deleted
+        console.log('Item removed from cart');
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error('Failed to remove item:', error);
+      });
+  };
 
   return (
     <Container className="cart-page-container">
@@ -49,6 +63,7 @@ const CartPage = () => {
             <th>Quantity</th>
             <th>Price</th>
             <th>Total</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -67,7 +82,7 @@ const CartPage = () => {
                   )}
                 </td>
                 <td>{item.productId && item.productId.title ? item.productId.title : 'N/A'}</td>
-                <td >
+                <td>
                   <input
                     type="number"
                     value={item.quantity}
@@ -78,16 +93,21 @@ const CartPage = () => {
                 </td>
                 <td>${((item.productId && item.productId.price) || 0).toFixed(2)}</td>
                 <td>${(item.quantity * ((item.productId && item.productId.price) || 0)).toFixed(2)}</td>
+                <td>
+                  <Button variant="danger" onClick={() => handleDelete(item.productId._id)}>
+                    Remove
+                  </Button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="5">No items in cart</td>
+              <td colSpan="6">No items in cart</td>
             </tr>
           )}
         </tbody>
       </Table>
-      <Button variant="primary" href="/checkout" className="checkout-button">
+      <Button variant="primary" disabled={isCheckoutDisabled} href="/checkout/shipping-address" className="checkout-button">
         Proceed to Checkout
       </Button>
     </Container>

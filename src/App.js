@@ -25,7 +25,7 @@ import Loader from './components/Loader';
 import Contact from './components/Contact';
 import Login from './pages/Admin/Login';
 import Admin from './pages/Admin';
-import PrivateRoute from './components/PrivateRoute';
+import Protected from './components/PrivateRoute';
 import PaymentForm from './components/checkout/Payment';
 import Review from './components/checkout/Review';
 import PlaceOrder from './components/checkout/placeOrder';
@@ -35,11 +35,11 @@ import Payment from './components/checkout/Payment';
 
 const AppContent = () => {
   const location = useLocation();
-  const authStatus = useSelector((state) => state.auth.status);
+  const {token, user} = useSelector((state) => state.auth);
   const productStatus = useSelector((state) => state.products.status);
-  const token = useSelector((state) => state.auth.token);
+  // const token = useSelector((state) => state.auth.token);
 
-  const isLoading = authStatus === 'loading' || productStatus === 'loading';
+  const isLoading = token === 'loading' || productStatus === 'loading';
 
   return (
     <>
@@ -60,9 +60,19 @@ const AppContent = () => {
           <Route path="/women-eastern" element={<WomenEastern />} />
           <Route path="/women-casual" element={<WomenCasual />} />
           <Route path="/women-accessories" element={<WomenAccessories />} />
-          <Route element={<PrivateRoute />}>
-          </Route>
-          <Route path="/cart" element={<CartPage />} />
+          <Route path="/cart" element={
+          <Protected isAuth={token}>
+             <CartPage />
+          </Protected>
+        } />
+{/* 
+<Route path="/admin" element={
+          <Protected isAuth={user}>
+             <Admin />
+          </Protected>
+        } /> */}
+        
+          {/* <Route path="/cart" element={<CartPage />} /> */}
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/admin" element={<Admin />} />

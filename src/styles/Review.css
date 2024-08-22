@@ -21,9 +21,10 @@
   border-radius: 8px;
   margin: 0 auto;
   margin-top: 20px;
+  margin-bottom: 20px;
   width: 50%;
   font-weight: bold;
-
+  background: gainsboro;
 }
 .cart-item-image {
     max-width: 80px;  /* Adjust as needed */
@@ -44,3 +45,6 @@
     justify-content: center;
   }
   
+  /* Review.css */
+
+

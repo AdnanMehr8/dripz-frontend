@@ -5,13 +5,14 @@ import { Button, Col, Row, Container, Spinner, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import '../styles/Men.css';
+import { addToCart, resetCartState } from "../redux/cartSlice";
 
 function MenAccessories() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { products, page, status, error, hasMore } = useSelector((state) => state.products);
+  const cartStatus = useSelector((state) => state.cartItems.cartStatus);
   const [quantity] = useState(1);
-  const [cartStatus, setCartStatus] = useState('');
   const observer = useRef();
 
   useEffect(() => {
@@ -29,26 +30,13 @@ function MenAccessories() {
     if (node) observer.current.observe(node);
   }, [status, hasMore, dispatch]);
 
-  const handleAddToCart = useCallback(async (productId) => {
+  const handleAddToCart = async (productId, quantity) => {
     try {
-      const response = await api.post(
-        '/cart/add',
-        { productId, quantity },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-      setCartStatus('Item added to cart!');
-      console.log('Cart response:', response.data);
-      setTimeout(() => setCartStatus(''), 3000);
+      await dispatch(addToCart({ productId, quantity })).unwrap();
     } catch (error) {
       console.error('Error adding item to cart:', error);
-      setCartStatus('Failed to add item to cart.');
-      setTimeout(() => setCartStatus(''), 3000);
     }
-  }, [quantity]);
+  };
 
   if (status === 'failed') {
     return <Alert variant="danger" className="text-center m-4">An error occurred while loading products. Please try again later.</Alert>;
@@ -58,7 +46,7 @@ function MenAccessories() {
     <div className="men-page">
       <Container fluid>
         <Row>
-          <h2 className="page-title">Men's Accessories Collection</h2>
+          <h2 className="page-title">Men's Accessories</h2>
         </Row>
         <Row className="product-grid">
           {products.map((product, index) => (
@@ -79,7 +67,8 @@ function MenAccessories() {
                     variant="primary" 
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleAddToCart(product._id);
+                      // handleAddToCart(product._id);
+                      handleAddToCart(product._id, quantity)
                     }}
                     aria-label={`Add ${product.title} to cart`}
                   >

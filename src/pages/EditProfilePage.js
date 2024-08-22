@@ -53,12 +53,14 @@ const EditProfilePage = () => {
     };
 
     return (
-        <Container className="edit-profile-container">
+        <Container className="login-Container">
             {status === 'loading' && <Spinner animation="border" className="loading-spinner" />}
             {status === 'failed' && <Alert variant="danger">Error: {error}</Alert>}
 
             <Form onSubmit={handleSubmit} className="edit-profile-form">
-                <h2 className="form-heading">Edit Profile</h2>
+                <h2 className='text-center'>Edit Profile</h2>
+      <div className='login-seperator'></div>
+
 
                 <Form.Group controlId="formName" className="mb-3">
                     <Form.Label>Name</Form.Label>
@@ -92,10 +94,11 @@ const EditProfilePage = () => {
                         className="form-control"
                     />
                 </Form.Group>
-
-                <Button variant="primary" type="submit" className="submit-button">
+                <div className='login-btn-container'>
+                <Button variant="primary" className='button' type="submit" disabled={status === 'loading'}>
                     Save Changes
                 </Button>
+                </div>
             </Form>
         </Container>
     );
